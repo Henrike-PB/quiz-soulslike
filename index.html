@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="video/estus-icon.png">
+        <title>Quiz Soulslike</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                color: antiquewhite;
+            }
+
+            #video-background {
+             
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .quiz-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            #pergunta {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            #opcoes {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            button {
+                padding: 10px 20px;
+                margin: 10px;
+                font-size: 16px;
+                background-color: #ffffff;
+                cursor: pointer;
+                border: none;
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #5cf5e8;
+            }
+
+            .correto {
+                background-color: #8bc34a;
+            }
+
+            .incorreto {
+                background-color: #ff5722;
+            }
+
+            #pontos {
+                transform: translateY(80%);
+                background-color: aqua;
+            }
+
+            .reiniciar {
+                padding: 10px 20px;
+                margin: 10px;
+                font-size: 16px;
+                background-color: #ff9100;
+                cursor: pointer;
+                border: none;
+                border-radius: 8px;
+                transition: background-color 0.5s ease;
+            }
+
+            .reiniciar:hover{
+                background-color: aqua;
+               
+            }
+
+            @media only screen and (max-width: 768px) {
+                .video-background {
+                    background: url('video/MOBILE-Dark-Souls-3.mp4') no-repeat
+                        center center;
+                    background-size: cover;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <video autoplay muted loop id="video-background">
+            <source
+                src="video/ds-back.mp4"
+                type="video/mp4"
+            />
+            seu navegador não suporta esse vídeo
+        </video>
+
+        <input
+            class="reiniciar"
+            type="button"
+            value="reiniciar"
+            onclick="window.location.reload()"
+        />
+
+        <div class="quiz-container">
+            <h1>Quiz de Perguntas e Respostas</h1>
+
+            <div id="pergunta"></div>
+            <div id="opcoes"></div>
+            <div id="resultado"></div>
+            <div id="pontos"></div>
+        </div>
+
+        <script>
+            const perguntas = [
+                {
+                    pergunta:
+                        'Qual é a quantidade máxima de frascos e poder do estus flask no Dark Souls 1?',
+                    opcoes: [
+                        '10 frascos e poder +0',
+                        '12 frascos e poder +3',
+                        '20 frascos e poder +5',
+                        '15 frascos e poder +10',
+                    ],
+                    resposta: '20 frascos e poder +5',
+                },
+                {
+                    pergunta:
+                        "Qual efeito 'passivo' foi adicionado em Dark Souls 3?",
+                    opcoes: [
+                        'Veneno',
+                        'Sangramento',
+                        'Podridão Escarlate',
+                        'Maldição',
+                        'Congelamento',
+                    ],
+                    resposta: 'Congelamento',
+                },
+                {
+                    pergunta:
+                        'Em qual lugar você upa (Subir de nível) no Dark Souls 2?',
+                    opcoes: [
+                        'Castelo de Drangleic',
+                        'Firelink Shrine',
+                        'Majula',
+                        'Anor Londo',
+                        'Shrine of Amana',
+                    ],
+                    resposta: 'Majula',
+                },
+                {
+                    pergunta: 'Quem é o irmão de Malenia?',
+                    opcoes: [
+                        'Vendrick',
+                        'Sir Alonne',
+                        'Artorias',
+                        'Lucathiel',
+                        'Miquella',
+                    ],
+                    resposta: 'Miquella',
+                },
+                {
+                    pergunta: 'Qual foi a empresa que criou a saga Soulsborne?',
+                    opcoes: [
+                        'Sony',
+                        'Microsoft',
+                        'Capcom',
+                        'From Software',
+                        'Naughty Dog',
+                    ],
+                    resposta: 'From Software',
+                },
+                {
+                    pergunta: 'Qual foi o NPC mais sacana da saga Souls?',
+                    opcoes: [
+                        'Solaire de Astora',
+                        'Patches',
+                        'Artorias',
+                        'Oscar',
+                        'Big Hat Logan',
+                        'Shanalotte',
+                    ],
+                    resposta: 'Patches',
+                },
+                {
+                    pergunta:
+                        'Qual foi o primeiro chefe encontrado em Dark Souls?',
+                    opcoes: [
+                        'Asylum Demon',
+                        'Taurus Demon',
+                        'Bell Gargoyle',
+                        'Capra Demon',
+                        'Moonlight Butterfly',
+                        'Chaos Witch Quelaag',
+                    ],
+                    resposta: 'Asylum Demon',
+                },
+
+                {
+                    pergunta: 'Qual é o nome do reino em Elden Ring?',
+                    opcoes: [
+                        'Lothric',
+                        'Drangleic',
+                        'Boletaria',
+                        'Lordran',
+                        'Lands Between',
+                        'Yharnam',
+                    ],
+                    resposta: 'Lands Between',
+                },
+
+                {
+                    pergunta: 'Quem é o chefe final em Dark Souls?',
+                    opcoes: [
+                        'Gwyn, Lord of Cinder',
+                        'Sif, the Great Grey Wolf',
+                        'Manus, Father of the Abyss',
+                        'Ornstein and Smough',
+                        'Seath the Scaleless',
+                        'Four Kings',
+                    ],
+                    resposta: 'Gwyn, Lord of Cinder',
+                },
+
+                {
+                    pergunta: 'Qual é o nome do protagonista em Elden Ring?',
+                    opcoes: [
+                        'The Ashen One',
+                        'The Chosen Undead',
+                        'The Hunter',
+                        'The Tarnished',
+                        'The Good Hunter',
+                        'The Undead Hero',
+                    ],
+                    resposta: 'The Tarnished',
+                },
+
+                {
+                    pergunta:
+                        'Qual foi o primeiro chefe encontrado em Elden Ring?',
+                    opcoes: [
+                        'Malenia, the God-Queen',
+                        'Elden Beast',
+                        'Radahn, the Dragon',
+                        'Demigod Sigurd',
+                        'The Golden Order',
+                        'Rennala, Queen of the Full Moon',
+                    ],
+                    resposta: 'Elden Beast',
+                },
+
+                {
+                    pergunta:
+                        'Quem é o criador da Chama Primordial em Dark Souls?',
+                    opcoes: [
+                        'Nito, the First of the Dead',
+                        'The Witch of Izalith',
+                        'Gwyn, Lord of Cinder',
+                        'Seath the Scaleless',
+                        'The Furtive Pygmy',
+                        'The Nameless King',
+                    ],
+                    resposta: 'The Witch of Izalith',
+                },
+
+                {
+                    pergunta:
+                        'Qual é a habilidade principal do personagem principal em Elden Ring?',
+                    opcoes: [
+                        'Magic',
+                        'Sorcery',
+                        'Pyromancy',
+                        'Miracles',
+                        'Martial Arts',
+                        'Runes',
+                    ],
+                    resposta: 'Runes',
+                },
+
+                {
+                    pergunta:
+                        "Quem é conhecido como 'O Abraçador do Fogo' em Dark Souls?",
+                    opcoes: [
+                        'Gwyn, Lord of Cinder',
+                        'The Nameless King',
+                        'Seath the Scaleless',
+                        'Quelaag, the Chaos Witch',
+                        'Nito, the First of the Dead',
+                        'The Witch of Izalith',
+                    ],
+                    resposta: 'Gwyn, Lord of Cinder',
+                },
+
+                {
+                    pergunta:
+                        'Qual é o nome do reino onde se passa a maioria dos eventos em Dark Souls III?',
+                    opcoes: [
+                        'Lothric',
+                        'Drangleic',
+                        'Boletaria',
+                        'Lordran',
+                        'Lands Between',
+                        'Yharnam',
+                    ],
+                    resposta: 'Lothric',
+                },
+
+                {
+                    pergunta: 'Quem é o antagonista principal em Elden Ring?',
+                    opcoes: [
+                        'Malenia, the God-Queen',
+                        'Radahn, the Dragon',
+                        'Demigod Sigurd',
+                        'The Golden Order',
+                        'Rennala, Queen of the Full Moon',
+                        'The Elden Ring',
+                    ],
+                    resposta: 'Malenia, the God-Queen',
+                },
+            ];
+
+
+            
+
+            const perguntaElemento = document.getElementById('pergunta');
+            const opcoesElemento = document.getElementById('opcoes');
+            const resultadoElemento = document.getElementById('resultado');
+            const pontosElemento = document.getElementById('pontos');
+
+            let indicePerguntaAtual = 0;
+            let pontos = 0;
+
+            function carregarPergunta() {
+                const perguntaAtual = perguntas[indicePerguntaAtual];
+                perguntaElemento.textContent = perguntaAtual.pergunta;
+
+                opcoesElemento.innerHTML = '';
+                perguntaAtual.opcoes.forEach((opcao) => {
+                    const botao = document.createElement('button');
+                    botao.textContent = opcao;
+                    botao.addEventListener('click', () =>
+                        verificarResposta(opcao)
+                    );
+                    opcoesElemento.appendChild(botao);
+                });
+
+                resultadoElemento.textContent = '';
+            }
+
+            function verificarResposta(respostaSelecionada) {
+                const perguntaAtual = perguntas[indicePerguntaAtual];
+                if (respostaSelecionada === perguntaAtual.resposta) {
+                    resultadoElemento.textContent = 'Resposta correta!';
+                    resultadoElemento.className = 'correto';
+                    pontos++;
+                } else {
+                    resultadoElemento.textContent =
+                        'Resposta incorreta. A resposta correta é: ' +
+                        perguntaAtual.resposta;
+                    resultadoElemento.className = 'incorreto';
+                }
+
+                indicePerguntaAtual++;
+                if (indicePerguntaAtual < perguntas.length) {
+                    setTimeout(carregarPergunta, 2000);
+                } else {
+                    resultadoElemento.textContent =
+            'Quiz concluído! Você acertou ' +
+                        pontos +
+                        ' de ' +
+                        perguntas.length +
+                        ' perguntas.';
+                    resultadoElemento.className = '';
+                    const reiniciarBotao = document.createElement('button');
+                    reiniciarBotao.textContent = 'Reiniciar Quiz';
+                    reiniciarBotao.onclick = recarregarAPagina;
+                    resultadoElemento.appendChild(reiniciarBotao);
+                }
+            }
+
+            carregarPergunta();
+
+            function recarregarAPagina() {
+                window.location.reload();
+            }
+        </script>
+    </body>
+</html>
